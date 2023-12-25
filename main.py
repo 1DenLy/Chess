@@ -1,4 +1,8 @@
 import sys
+import pygame
+
+from data.classFigure.mainClass import mainFigure
+
 from data.classChessBoard.mainChessBoadFile import *
 
 from data.classChessBoard.mainChessBoadFile import ChessBoard
@@ -24,7 +28,6 @@ listOfCells = ChessBoard.creatingCellsDesc()
 
 # Create figure queen for the board
 queenW = queenFigure.createFigure(x_position= "D", y_position= "1", imageObject= "data/classFigure/Image/wQ.svg")
-
 kingW = kingFigure.createFigure(x_position= "E", y_position= "1", imageObject= "data/classFigure/Image/wK.svg")
 
 bishopW_L = bishopFigure.createFigure(x_position= "C", y_position= "1", imageObject= "data/classFigure/Image/wB.svg")
@@ -37,7 +40,6 @@ rookW_L = rookFigure.createFigure(x_position= "A", y_position= "1", imageObject=
 rookW_R = rookFigure.createFigure(x_position= "H", y_position= "1", imageObject= "data/classFigure/Image/wR.svg")
 
 queenB = queenFigure.createFigure(x_position= "D", y_position= "9", imageObject= "data/classFigure/Image/bQ.svg")
-
 kingB = kingFigure.createFigure(x_position= "E", y_position= "9", imageObject= "data/classFigure/Image/bK.svg")
 
 bishopB_L = bishopFigure.createFigure(x_position= "C", y_position= "9", imageObject= "data/classFigure/Image/bB.svg")
@@ -55,22 +57,32 @@ pawnB_List = [pawnFigure.createFigure(x_position= LISTOFLETTERS[i], y_position= 
 
 
 
+    # Main Cycle
 
-# Главный цикл программы
 clock = pygame.time.Clock()
 running = True
 
 while running:
 
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+
+        if event.type == pygame.QUIT: # Exit program
             running = False
 
-    screen.fill(WHITE)
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            
+            mainFigure.moveFigure()
+
+            mainFigure.selectedCells(listOfCells)
 
 
-    # Отрисовка клеток шахматной доски
-    for cell in listOfCells: cell.draw(screen)
+
+
+    screen.fill(WHITE)  # Clear screen
+
+
+    for cell in listOfCells: cell.draw(screen)  # Draw cell
 
 
     # Отрисовка линий для разделения пространства счетчика времени
@@ -79,10 +91,10 @@ while running:
     pygame.draw.line(screen, BLACK, (50, 48), (690, 48), 2)  # Верх граница
     pygame.draw.line(screen, BLACK, (50, 770), (690, 770), 2)  # Нижняя граница
 
-    ChessBoard.drawCellsNumerated(surface= screen, list= listOfCells)
+    ChessBoard.drawCellsNumerated(surface= screen, list= listOfCells)   # Draw a list of cells with numbers
 
 
-    # Draw the queen figure 
+    # Draw the figure 
     queenW.draw(screen)
     queenB.draw(screen)
 
@@ -108,8 +120,8 @@ while running:
     rookB_R.draw(screen)
 
 
-    for pawnW in pawnW_List: pawnW.draw(screen)
-    for pawnB in pawnB_List: pawnB.draw(screen)
+    for pawnW in pawnW_List: pawnW.draw(screen) # draw white pawn in screen
+    for pawnB in pawnB_List: pawnB.draw(screen) # draw black pawn in screen
 
     pygame.display.flip()
     clock.tick(FPS)

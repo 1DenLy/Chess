@@ -6,5 +6,6 @@ pygame.init()
 
 
 class pawnFigure(mainFigure):
-    def __init__(self):
-        super().__init__()
+    pass
+
+
